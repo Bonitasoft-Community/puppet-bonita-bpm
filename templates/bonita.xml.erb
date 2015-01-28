@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- The contents of this file will be loaded for bonita web application only -->
+<Context reloadable="true">
+
+    <!-- Datasources -->
+    <Resource name="bonitaDS" auth="Container" type="javax.sql.DataSource"
+        factory="bitronix.tm.resource.ResourceObjectFactory" uniqueName="jdbc/bonitaDSXA" />
+
+    <Resource name="bonitaSequenceManagerDS"  
+              auth="Container"  
+              type="javax.sql.DataSource" 
+              maxActive="<%= scope.lookupvar('bonita_bpm::params::bonitaSequenceManagerDS_maxActive') %>"  
+              minIdle="<%= scope.lookupvar('bonita_bpm::params::bonitaSequenceManagerDS_minIdle') %>"
+              maxWait="10000"  
+              initialSize="1" 
+              validationQuery="SELECT 1"
+              validationInterval="30000"
+              removeAbandoned="true" 
+              logAbandoned="true" 
+              username="<%= scope.lookupvar('bonita_bpm::params::db_user') %>" 
+              password="<%= scope.lookupvar('bonita_bpm::params::db_pass') %>"
+              driverClassName="<%= scope.lookupvar('bonita_bpm::params::driverClassName') %>" 
+              url="<%= scope.lookupvar('bonita_bpm::params::jdbc_url') %>"/>
+
+<% if scope.lookupvar('bonita_bpm::businessDS_user')!=:undef and scope.lookupvar('bonita_bpm::businessDS_user') != '' then -%>
+    <Resource name="businessDS"  
+              auth="Container"  
+              type="javax.sql.DataSource" 
+              maxActive="<%= scope.lookupvar('bonita_bpm::businessDS_maxActive') %>"  
+              minIdle="<%= scope.lookupvar('bonita_bpm::businessDS_minIdle') %>"
+              maxWait="10000"  
+              initialSize="1"
+              testOnBorrow="true"
+              validationQuery="SELECT 1"
+              validationInterval="30000"
+              removeAbandoned="true" 
+              logAbandoned="true" 
+              username="<%= scope.lookupvar('bonita_bpm::businessDS_user') %>" 
+              password="<%= scope.lookupvar('bonita_bpm::businessDS_pass') %>"
+              driverClassName="<%= scope.lookupvar('bonita_bpm::params::businessDS_driverClassName') %>" 
+              url="<%= scope.lookupvar('bonita_bpm::params::businessDS_jdbc_url') %>"/>
+<% end -%>
+
+<% if scope.lookupvar('bonita_bpm::params::tenants')!=:undef -%>
+<% scope.lookupvar('bonita_bpm::params::tenants').each do |tenant| -%>
+<% if tenant['business_data'] %>
+    <Resource name="<%= tenant['business_data']['dsxa']['name'] %>" auth="Container" type="javax.sql.DataSource"
+        factory="bitronix.tm.resource.ResourceObjectFactory" uniqueName="jdbc/<%= tenant['business_data']['dsxa']['name'] %>" />
+
+    <Resource name="<%= tenant['business_data']['ds']['name'] %>"
+              auth="Container"
+              type="javax.sql.DataSource"
+              maxActive="<%= tenant['business_data']['ds']['maxActive'] %>"
+              minIdle="<%= tenant['business_data']['ds']['minIdle'] %>"
+              maxWait="10000"
+              initialSize="1"
+              testOnBorrow="true"
+              validationQuery="<%= tenant['business_data']['ds_common']['testQuery'] %>"
+              validationInterval="30000"
+              removeAbandoned="true"
+              logAbandoned="true"
+              username="<%= tenant['business_data']['ds_common']['db_user'] %>" 
+              password="<%= tenant['business_data']['ds_common']['db_pass'] %>"
+              driverClassName="<%= tenant['business_data']['ds']['driverClassName'] %>" 
+              url="jdbc:postgresql://<%= tenant['business_data']['ds_common']['db_host'] %>:<%= tenant['business_data']['ds_common']['db_port'] %>/<%= tenant['business_data']['ds_common']['db_name'] %>"/>
+<% end %>
+<% end -%>
+<% end -%>
+
+</Context>

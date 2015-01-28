@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Set some JVM system properties required by Bonita BPM
+
+# Bonita home folder (configuration files, temporary folder...) location
+BONITA_HOME="-Dbonita.home=<%= scope.lookupvar('bonita_bpm::params::home') %>"
+
+# Define the RDMBS vendor use by Bonita Engine to store data
+DB_OPTS="<%= scope.lookupvar('bonita_bpm::params::db_opts') %>"
+
+# Bitronix (JTA service added to Tomcat and required by Bonita Engine for transaction management)
+BTM_OPTS="-Dbtm.root=${CATALINA_BASE} -Dbitronix.tm.configuration=${CATALINA_BASE}/conf/bitronix-config.properties"
+
+# Optionnal JAAS configuration. Usually used when delgating authentication to LDAP / Active Directory server
+#SECURITY_OPTS="-Djava.security.auth.login.config=${CATALINA_HOME}/conf/jaas-standard.cfg"
+
+JMX_OPTS="<% if scope.lookupvar('bonita_bpm::jmx_pass')!=:undef then %>-Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.password.file=<%= scope.lookupvar('bonita_bpm::params::app_srv_conf')%>/jmx/jmxremote.password -Dcom.sun.management.jmxremote.access.file=<%= scope.lookupvar('bonita_bpm::params::app_srv_conf')%>/jmx/jmxremote.access<% end %>"
+
+# Pass the JVM system properties to Tomcat JVM using JAVA_OPTS variable
+JAVA_OPTS="$BONITA_HOME $DB_OPTS $BTM_OPTS $JMX_OPTS <%= scope.lookupvar('bonita_bpm::params::java_opts') %>"
+export JAVA_OPTS

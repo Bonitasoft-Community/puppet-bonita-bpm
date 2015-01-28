@@ -1,0 +1,34 @@
+resource.ds1.uniqueName=jdbc/bonitaDSXA
+resource.ds1.minPoolSize=<%= scope.lookupvar('bonita_bpm::params::bonitaDS_minIdle') %>
+resource.ds1.maxPoolSize=<%= scope.lookupvar('bonita_bpm::params::bonitaDS_maxActive') %>
+resource.ds1.TestQuery=SELECT 1
+allowLocalTransactions=true 
+resource.ds1.className=<%= scope.lookupvar('bonita_bpm::params::bt_className') %>
+resource.ds1.driverProperties.user=<%= scope.lookupvar('bonita_bpm::params::db_user') %>
+resource.ds1.driverProperties.password=<%= scope.lookupvar('bonita_bpm::params::db_pass') %>
+<% if scope.lookupvar('bonita_bpm::params::db_vendor')=='postgres' then -%>
+resource.ds1.driverProperties.serverName=<%= scope.lookupvar('bonita_bpm::params::db_host') %>
+resource.ds1.driverProperties.portNumber=<%= scope.lookupvar('bonita_bpm::params::db_port') %>
+resource.ds1.driverProperties.databaseName=<%= scope.lookupvar('bonita_bpm::params::db_name') %>
+<% else -%>
+resource.ds1.driverProperties.URL=<%= scope.lookupvar('bonita_bpm::params::jdbc_url') %>
+<% end %>
+# Business Data 
+<% dsnum=1 -%>
+<% if scope.lookupvar('bonita_bpm::params::tenants')!=:undef -%>
+<% scope.lookupvar('bonita_bpm::params::tenants').each do |tenant| -%>
+<% if tenant['business_data'] -%>
+<% dsnum += 1 %>
+resource.ds<%= dsnum %>.uniqueName=jdbc/<%= tenant['business_data']['dsxa']['name'] %>
+resource.ds<%= dsnum %>.minPoolSize=<%= tenant['business_data']['dsxa']['minPoolSize'] %>
+resource.ds<%= dsnum %>.maxPoolSize=<%= tenant['business_data']['dsxa']['maxPoolSize'] %>
+resource.ds<%= dsnum %>.className=<%= tenant['business_data']['dsxa']['className'] %>
+resource.ds<%= dsnum %>.driverProperties.user=<%= tenant['business_data']['ds_common']['db_user'] %>
+resource.ds<%= dsnum %>.driverProperties.password=<%= tenant['business_data']['ds_common']['db_pass'] %>
+resource.ds<%= dsnum %>.driverProperties.serverName=<%= tenant['business_data']['ds_common']['db_host'] %>
+resource.ds<%= dsnum %>.driverProperties.portNumber=<%= tenant['business_data']['ds_common']['db_port'] %>
+resource.ds<%= dsnum %>.driverProperties.databaseName=<%= tenant['business_data']['ds_common']['db_name'] %>
+resource.ds<%= dsnum %>.testQuery=<%= tenant['business_data']['ds_common']['testQuery'] %>
+<% end -%>
+<% end -%>
+<% end -%>
