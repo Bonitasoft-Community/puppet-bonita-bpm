@@ -41,33 +41,33 @@ Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' }
   # quartz configuration
   $bonita_bpm_quartz_threadCount                = '5'
   # tenants configuration
-  $bonita_bpm_tenants = [ 
+  $bonita_bpm_tenants = [
               { id        => '1',
                 user      => 'tech_user',
                 pass      => 'tenantsecret',
                 business_data => {
-                                   ds        => {
-                                                  name            => 'NotManagedBizDataDS',
-                                                  minIdle         => '1',
-                                                  maxActive       => '5',
-                                                  driverClassName => 'org.postgresql.Driver',
-                                                },
-                                   dsxa      => {
-                                                  name        => 'BusinessDataDS',
-                                                  minPoolSize => '0',
-                                                  maxPoolSize => '5',
-                                                  className   => 'org.postgresql.xa.PGXADataSource',
-                                                },
-                                   ds_common => {
-                                                  db_user   => 'datamanagementuser',
-                                                  db_pass   => 'datamanagementpass',
-                                                  db_name   => 'datamanagementdb',
-                                                  db_host   => '127.0.0.1',
-                                                  db_port   => '5432',
-                                                  testQuery => 'SELECT 1',
-                                                  hibernate_dialect => 'org.hibernate.dialect.PostgreSQLDialect',
-                                                }
-                                 }
+                  ds        => {
+                    name            => 'NotManagedBizDataDS',
+                    minIdle         => '1',
+                    maxActive       => '5',
+                    driverClassName => 'org.postgresql.Driver',
+                  },
+                  dsxa      => {
+                    name        => 'BusinessDataDS',
+                    minPoolSize => '0',
+                    maxPoolSize => '5',
+                    className   => 'org.postgresql.xa.PGXADataSource',
+                  },
+                  ds_common => {
+                    db_user   => 'datamanagementuser',
+                    db_pass   => 'datamanagementpass',
+                    db_name   => 'datamanagementdb',
+                    db_host   => '127.0.0.1',
+                    db_port   => '5432',
+                    testQuery => 'SELECT 1',
+                    hibernate_dialect => 'org.hibernate.dialect.PostgreSQLDialect',
+                  }
+                }
               }
   ]
 
