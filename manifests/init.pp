@@ -45,6 +45,7 @@ class bonita_bpm (
   $java_opts                         = $::bonita_bpm_java_opts,
   $jmx_pass                          = $::bonita_bpm_jmx_pass,
   $maxThreads                        = $::bonita_bpm_maxThreads,
+  $server_info                       = $::bonita_bpm_server_info,
   # bonita workers configuration
   $corePoolSize                      = $::bonita_bpm_corePoolSize,
   $maximumPoolSize                   = $::bonita_bpm_maximumPoolSize,

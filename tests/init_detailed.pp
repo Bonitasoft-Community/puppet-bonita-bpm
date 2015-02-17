@@ -33,6 +33,7 @@ Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' }
   $bonita_bpm_java_opts                         = '-Djava.awt.headless=true -XX:+UseConcMarkSweepGC -Dfile.encoding=UTF-8 -Xshare:auto -Xms512m -Xmx512m -XX:MaxPermSize=128m -XX:+HeapDumpOnOutOfMemoryError'
   $bonita_bpm_jmx_pass                          = 'jmxsecret'
   $bonita_bpm_maxThreads                        = '150'
+  $bonita_bpm_server_info                       = 'Apache Tomcat'
   # bonita workers configuration
   $bonita_bpm_corePoolSize                      = '8'
   $bonita_bpm_maximumPoolSize                   = '8'
