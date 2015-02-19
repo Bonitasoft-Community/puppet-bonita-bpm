@@ -133,7 +133,7 @@
       </Realm>
 
       <Host name="localhost"  appBase="webapps"
-            unpackWARs="true" autoDeploy="true">
+            unpackWARs="true" autoDeploy="false" deployOnStartup="true">
         <Valve authenticationUrl="/loginservice" className="org.bonitasoft.console.security.SessionFixationValve"/>
         <!-- SingleSignOn valve, share authentication between web applications
              Documentation at: /docs/config/valve.html -->

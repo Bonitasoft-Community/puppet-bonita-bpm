@@ -280,17 +280,20 @@ class bonita_bpm::deploy_bonita_bpm {
       require => Exec['copy_bonita_conf'];
 
     #Update bonita.war with proper web.xml
-    'update_web_xml':
-      command => 'zip /var/tmp/BOS/webapps/bonita.war WEB-INF/web.xml',
-      cwd     => '/var/tmp/',
-      require => [Exec['untar_bos'], File['web.xml']];
+    'update_web_xml_into_war':
+      command     => 'zip /var/tmp/BOS/webapps/bonita.war WEB-INF/web.xml',
+      cwd         => '/var/tmp/',
+      require     => [Exec['untar_bos'], File['web.xml']],
+      subscribe   => File['web.xml'],
+      refreshonly => true,
+      notify      => Exec['copy_war'];
 
     #Deploy war including engine & portal
     'copy_war':
-      command => "cp -a /var/tmp/BOS/webapps/bonita.war ${bonita_bpm::params::catalina_base}/webapps/bonita.war",
-      creates => "${bonita_bpm::params::catalina_base}/webapps/bonita.war",
-      require => [Exec['copy_bonita_conf','copy_libs', 'update_web_xml'],Package[$bonita_bpm::params::service_name]],
-      notify  => Service[$bonita_bpm::params::service_name];
+      command => "rm -rf ${bonita_bpm::params::catalina_base}/webapps/bonita && cp -a /var/tmp/BOS/webapps/bonita.war ${bonita_bpm::params::catalina_base}/webapps/bonita.war",
+      unless  => "diff /var/tmp/BOS/webapps/bonita.war ${bonita_bpm::params::catalina_base}/webapps/bonita.war",
+      require => [Exec['copy_bonita_conf','copy_libs'],Package[$bonita_bpm::params::service_name]],
+      notify  => Service[$bonita_bpm::params::service_name],
   }
 
   case $bonita_bpm::params::db_vendor {
