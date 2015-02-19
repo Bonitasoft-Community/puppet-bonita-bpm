@@ -55,6 +55,8 @@ class bonita_bpm (
   $quartz_threadCount                = $::bonita_bpm_quartz_threadCount,
   # HTTP API
   $http_api                          = $::bonita_bpm_http_api,
+  # security checks on portal servlets
+  $portal_servlet_security_checks    = $::bonita_bpm_portal_servlet_security_checks,
   # tenants configuration
   $tenants                           = $::bonita_bpm_tenants,
   # bonita home path

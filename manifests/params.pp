@@ -132,6 +132,12 @@ class bonita_bpm::params {
   } else {
     $http_api = $bonita_bpm::http_api
   }
+  # security checks on portal servlets
+  if $bonita_bpm::portal_servlet_security_checks == undef {
+    $portal_servlet_security_checks = 'true'
+  } else {
+    $portal_servlet_security_checks = $bonita_bpm::portal_servlet_security_checks
+  }
   # tenants configuration
   if $bonita_bpm::tenants == undef {
     $tenants = [

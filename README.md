@@ -164,6 +164,8 @@ The following lists all the class parameters the bonita_bpm class accepts as wel
     quartz_threadCount                 bonita_bpm_quartz_threadCount                See [Scheduler service documentation](http://documentation.bonitasoft.com/performance-tuning-0#scheduler_service)
     # HTTP API
     http_api                           bonita_bpm_http_api                          Set to 'false' by default in order to deactivate the HTTP API
+    # security checks on portal servlets
+    portal_servlet_security_checks     bonita_bpm_portal_servlet_security_checks    Set to 'true' by default in order to activate security checks also on portal servlets
     # tenants configuration
     tenants                            bonita_bpm_tenants                           See below a detailed example
     # bonita home path
