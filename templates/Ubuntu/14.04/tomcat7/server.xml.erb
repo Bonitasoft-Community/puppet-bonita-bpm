@@ -134,6 +134,16 @@
 
       <Host name="localhost"  appBase="webapps"
             unpackWARs="true" autoDeploy="false" deployOnStartup="true">
+
+<% if scope.lookupvar('bonita_bpm::params::RemoteIpValve_internalProxies') != '' then %>
+      <Valve
+        className="org.apache.catalina.valves.RemoteIpValve"
+        internalProxies="<%= scope.lookupvar('bonita_bpm::params::RemoteIpValve_internalProxies') %>"
+        remoteIpHeader="X-Forwarded-For"
+        protocolHeader="X-Forwarded-Proto"
+      />
+<% end %>
+
         <Valve authenticationUrl="/loginservice" className="org.bonitasoft.console.security.SessionFixationValve"/>
         <!-- SingleSignOn valve, share authentication between web applications
              Documentation at: /docs/config/valve.html -->
@@ -145,8 +155,8 @@
              Documentation at: /docs/config/valve.html
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
-               prefix="localhost_access_log." suffix=".txt"
-               pattern="%a %{X-Forwarded-For}i %{X-Forwarded-Proto}i %l %u %t &quot;%r&quot; %s %b" />
+               prefix="localhost_access_log." suffix=".txt" requestAttributesEnabled="true"
+               pattern="<%= scope.lookupvar('bonita_bpm::params::AccessLogValve_pattern') %>" />
 
       </Host>
     </Engine>

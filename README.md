@@ -155,6 +155,8 @@ The following lists all the class parameters the bonita_bpm class accepts as wel
     jmx_pass                           bonita_bpm_jmx_pass
     maxThreads                         bonita_bpm_maxThreads                        The maximum number of request processing threads to be created by the Tomcat Connector, which therefore determines the maximum number of simultaneous requests that can be handled.
     server_info                        bonita_bpm_server_info                       To overwrite the label displaying the Tomcat version in error pages
+    RemoteIpValve_internalProxies      bonita_bpm_RemoteIpValve_internalProxies     If set, it activates the [RemoteIpValve](https://tomcat.apache.org/tomcat-7.0-doc/api/org/apache/catalina/valves/RemoteIpValve.html)
+    AccessLogValve_pattern             bonita_bpm_AccessLogValve_pattern            The default value is '%a %{X-Forwarded-For}i %{X-Forwarded-Proto}i %l %u %t &quot;%r&quot; %s %b'. See the [pattern codes supported](http://tomcat.apache.org/tomcat-7.0-doc/config/valve.html#Access_Log_Valve/Attributes)
     # bonita workers configuration
     corePoolSize                       bonita_bpm_corePoolSize                      See [Work service documentation](http://documentation.bonitasoft.com/performance-tuning-0#work_service)
     maximumPoolSize                    bonita_bpm_maximumPoolSize

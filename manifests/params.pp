@@ -102,6 +102,16 @@ class bonita_bpm::params {
   } else {
     $maxThreads = $bonita_bpm::maxThreads
   }
+  if $bonita_bpm::RemoteIpValve_internalProxies == undef {
+    $RemoteIpValve_internalProxies = ''
+  } else {
+    $RemoteIpValve_internalProxies = $bonita_bpm::RemoteIpValve_internalProxies
+  }
+  if $bonita_bpm::AccessLogValve_pattern == undef {
+    $AccessLogValve_pattern = '%a %{X-Forwarded-For}i %{X-Forwarded-Proto}i %l %u %t &quot;%r&quot; %s %b'
+  } else {
+    $AccessLogValve_pattern = $bonita_bpm::AccessLogValve_pattern
+  }
 
   # bonita workers configuration
   if $bonita_bpm::corePoolSize == undef {

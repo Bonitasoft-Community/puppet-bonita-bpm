@@ -46,6 +46,8 @@ class bonita_bpm (
   $jmx_pass                          = $::bonita_bpm_jmx_pass,
   $maxThreads                        = $::bonita_bpm_maxThreads,
   $server_info                       = $::bonita_bpm_server_info,
+  $RemoteIpValve_internalProxies     = $::bonita_bpm_RemoteIpValve_internalProxies,
+  $AccessLogValve_pattern            = $::bonita_bpm_AccessLogValve_pattern,
   # bonita workers configuration
   $corePoolSize                      = $::bonita_bpm_corePoolSize,
   $maximumPoolSize                   = $::bonita_bpm_maximumPoolSize,
