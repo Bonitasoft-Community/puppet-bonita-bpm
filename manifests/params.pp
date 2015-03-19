@@ -102,6 +102,7 @@ class bonita_bpm::params {
   } else {
     $maxThreads = $bonita_bpm::maxThreads
   }
+
   # bonita workers configuration
   if $bonita_bpm::corePoolSize == undef {
     $corePoolSize = '8'
@@ -218,7 +219,7 @@ class bonita_bpm::params {
           $businessDS_driver_path     = $mysql_driver_path
           $businessDS_driver_target   = $mysql_driver_target
           $businessDS_driverClassName = 'com.mysql.jdbc.Driver'
-          $businessDS_jdbc_url        = "jdbc:${bonita_bpm::businessDS_db_vendor}://${bonita_bpm::businessDS_host}:${bonita_bpm::businessDS_port}/${bonita_bpm::businessDS_name}${businessDS_params}"
+          $businessDS_jdbc_url        = "jdbc:${bonita_bpm::businessDS_db_vendor}://${bonita_bpm::businessDS_host}:${bonita_bpm::businessDS_port}/${bonita_bpm::businessDS_name}${businessDS_db_params}"
         }
         'postgres': {
           $businessDS_db_params       = ''
@@ -226,7 +227,7 @@ class bonita_bpm::params {
           $businessDS_driver_path     = $pgsql_driver_path
           $businessDS_driver_target   = $pgsql_driver_target
           $businessDS_driverClassName = 'org.postgresql.Driver'
-          $businessDS_jdbc_url        = "jdbc:postgresql://${bonita_bpm::businessDS_host}:${bonita_bpm::businessDS_port}/${bonita_bpm::businessDS_name}${businessDS_params}"
+          $businessDS_jdbc_url        = "jdbc:postgresql://${bonita_bpm::businessDS_host}:${bonita_bpm::businessDS_port}/${bonita_bpm::businessDS_name}${businessDS_db_params}"
         }
         default: {
           if $bonita_bpm::businessDS_db_vendor != undef {
