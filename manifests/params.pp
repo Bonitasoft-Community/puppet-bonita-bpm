@@ -181,7 +181,14 @@ class bonita_bpm::params {
       # catalina.base points to the directory where all the instance specific information are held
       $catalina_base = '/var/lib/tomcat7'
 
-      $pkg_list = ['openjdk-7-jre-headless', $pkg_app_srv, 'libtcnative-1', 'ttf-dejavu-extra', 'zip']
+      case $::architecture {
+        'armv7l': {
+          $pkg_list = [$pkg_app_srv, 'libtcnative-1', 'ttf-dejavu-extra', 'zip']
+        }
+        default: {
+          $pkg_list = ['openjdk-7-jre-headless', $pkg_app_srv, 'libtcnative-1', 'ttf-dejavu-extra', 'zip']
+        }
+      }
       $context_path="${app_srv_conf}/Catalina/localhost"
       $setenv_path="${catalina_home}/bin"
       $setenv_file='setenv.sh'
