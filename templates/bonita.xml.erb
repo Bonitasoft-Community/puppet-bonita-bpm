@@ -13,6 +13,7 @@
               minIdle="<%= scope.lookupvar('bonita_bpm::params::bonitaSequenceManagerDS_minIdle') %>"
               maxWait="10000"  
               initialSize="1" 
+              testOnBorrow="true"
               validationQuery="SELECT 1"
               validationInterval="30000"
               removeAbandoned="true" 
