@@ -22,19 +22,19 @@ ARCHIVE CREATION
  * For Community edition :  
  
         cd /tmp/
-        wget http://download.forge.ow2.org/bonita/BonitaBPMCommunity-6.4.1-Tomcat-7.0.55.zip
-        unzip BonitaBPMCommunity-6.4.1-Tomcat-7.0.55.zip
-        cd BonitaBPMCommunity-6.4.1-Tomcat-7.0.55
-        tar -czf BonitaBPMCommunity-6.4.1.tgz bonita/ lib/bonita/ webapps/bonita.war
+        wget http://download.forge.ow2.org/bonita/BonitaBPMCommunity-6.5.2-Tomcat-7.0.55.zip
+        unzip BonitaBPMCommunity-6.5.2-Tomcat-7.0.55.zip
+        cd BonitaBPMCommunity-6.5.2-Tomcat-7.0.55
+        tar -czf BonitaBPMCommunity-6.5.2.tgz bonita/ lib/bonita/ webapps/bonita.war
 
  * For Performance edition we need to update the bonita home accordingly :
  
         cd /tmp/
-        unzip BonitaBPMSubscription-6.4.1-Tomcat-7.0.55.zip
-        rm -rf BonitaBPMSubscription-6.4.1-Tomcat-7.0.55/bonita/
-        cd BonitaBPMSubscription-6.4.1-Tomcat-7.0.55
-        unzip ../bonita-home-sp-6.4.1-performance.zip
-        tar -czf BonitaBPMSubscription-6.4.1-performance.tgz bonita/ lib/bonita/ webapps/bonita.war
+        unzip BonitaBPMSubscription-6.5.2-Tomcat-7.0.55.zip
+        rm -rf BonitaBPMSubscription-6.5.2-Tomcat-7.0.55/bonita/
+        cd BonitaBPMSubscription-6.5.2-Tomcat-7.0.55
+        unzip ../bonita-home-sp-6.5.2-performance.zip
+        tar -czf BonitaBPMSubscription-6.5.2-performance.tgz bonita/ lib/bonita/ webapps/bonita.war
 
 LICENSE
 -------
@@ -51,7 +51,7 @@ DATABASE CREATION
 
 INSTALLATION
 ============
- * Put the target archive (for example: BonitaBPMCommunity-6.4.1.tgz) into bonita_bpm/files/archives/ directory
+ * Put the target archive (for example: BonitaBPMCommunity-6.5.2.tgz) into bonita_bpm/files/archives/ directory
  * If you install the Bonita BPM Performance edition copy your license into bonita_bpm/files/licenses/ directory
 
 CONFIGURATION
@@ -95,9 +95,9 @@ Steps:
 
 ```puppet
 Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' }
-$bonita_bpm_version = '6.4.1'
+$bonita_bpm_version = '6.5.2'
 $bonita_bpm_edition = 'community'
-$bonita_bpm_archive = 'BonitaBPMCommunity-6.4.1.tgz'
+$bonita_bpm_archive = 'BonitaBPMCommunity-6.5.2.tgz'
 include bonita_bpm
 ```
 
@@ -108,9 +108,9 @@ Declaration example:
 ```puppet
 Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' }
 class { 'bonita_bpm':
-  version => '6.4.1',
+  version => '6.5.2',
   edition => 'community',
-  archive => 'BonitaBPMCommunity-6.4.1.tgz',
+  archive => 'BonitaBPMCommunity-6.5.2.tgz',
 }
 ```
 

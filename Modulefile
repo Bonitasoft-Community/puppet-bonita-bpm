@@ -1,5 +1,5 @@
 name    'bonitasoft-bonita_bpm'
-version '1.2.0'
+version '1.2.1'
 source 'https://github.com/Bonitasoft-Community/puppet-bonita-bpm'
 author 'bonitasoft'
 license 'GNU GPL v2.0'
