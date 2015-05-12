@@ -271,7 +271,7 @@ class bonita_bpm::params {
 
   # manage version dependant variables
   case $bonita_bpm::version {
-    '6.4.0', '6.4.1', '6.4.2', '6.5.0', '6.5.1': {
+    '6.4.0', '6.4.1', '6.4.2', '6.5.0', '6.5.1', '6.5.2': {
       if $bonita_bpm::edition == 'performance' {
         $connectors_file = 'cfg-bonita-connector-timedout.xml'
         $connectors_tpl  = 'cfg-bonita-connector-timedout.xml.erb'

@@ -8,7 +8,7 @@ This module manages [Bonita BPM](http://www.bonitasoft.com) Community or Perform
 Currently this module has only been tested on Ubuntu 14.04 using Puppet 3.4.3 and PostgreSQL.
 
 * Bonita BPM editions currently supported : Community, Performance
-* Bonita BPM versions currently supported : 6.4.0, 6.4.1, 6.4.2, 6.5.0, 6.5.1
+* Bonita BPM versions currently supported : 6.4.0, 6.4.1, 6.4.2, 6.5.0, 6.5.1, 6.5.2
 
 REQUIREMENTS
 ============
@@ -122,7 +122,7 @@ The following lists all the class parameters the bonita_bpm class accepts as wel
     bonita_bpm CLASS PARAMETER         TOP SCOPE EQUIVALENT                         DESCRIPTION
     -------------------------------------------------------------------------------------------
     # mandatory parameters
-    version                            bonita_bpm_version                           The Bonita BPM version : 6.4.0, 6.4.1, 6.4.2, 6.5.0, 6.5.1
+    version                            bonita_bpm_version                           The Bonita BPM version : 6.4.0, 6.4.1, 6.4.2, 6.5.0, 6.5.1, 6.5.2
     edition                            bonita_bpm_edition                           The Bonita BPM edition : community, performance
     archive                            bonita_bpm_archive                           The tgz archive which contains bonita home, libs and war file
     # the license is not mandatory if edition is equal to community
