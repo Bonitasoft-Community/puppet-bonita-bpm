@@ -8,7 +8,7 @@ This module manages [Bonita BPM](http://www.bonitasoft.com) Community or Perform
 Currently this module has only been tested on Ubuntu 14.04 using Puppet 3.4.3 and PostgreSQL.
 
 * Bonita BPM editions currently supported : Community, Performance
-* Bonita BPM versions currently supported : 6.4.0, 6.4.1, 6.4.2, 6.5.0, 6.5.1, 6.5.2
+* Bonita BPM versions currently supported : 6.4.0, 6.4.1, 6.4.2, 6.5.0, 6.5.1, 6.5.2, 6.5.3
 
 REQUIREMENTS
 ============
@@ -22,19 +22,19 @@ ARCHIVE CREATION
  * For Community edition :  
  
         cd /tmp/
-        wget http://download.forge.ow2.org/bonita/BonitaBPMCommunity-6.5.2-Tomcat-7.0.55.zip
-        unzip BonitaBPMCommunity-6.5.2-Tomcat-7.0.55.zip
-        cd BonitaBPMCommunity-6.5.2-Tomcat-7.0.55
-        tar -czf BonitaBPMCommunity-6.5.2.tgz bonita/ lib/bonita/ webapps/bonita.war
+        wget http://download.forge.ow2.org/bonita/BonitaBPMCommunity-6.5.3-Tomcat-7.0.55.zip
+        unzip BonitaBPMCommunity-6.5.3-Tomcat-7.0.55.zip
+        cd BonitaBPMCommunity-6.5.3-Tomcat-7.0.55
+        tar -czf BonitaBPMCommunity-6.5.3.tgz bonita/ lib/bonita/ webapps/bonita.war
 
  * For Performance edition we need to update the bonita home accordingly :
  
         cd /tmp/
-        unzip BonitaBPMSubscription-6.5.2-Tomcat-7.0.55.zip
-        rm -rf BonitaBPMSubscription-6.5.2-Tomcat-7.0.55/bonita/
-        cd BonitaBPMSubscription-6.5.2-Tomcat-7.0.55
-        unzip ../bonita-home-sp-6.5.2-performance.zip
-        tar -czf BonitaBPMSubscription-6.5.2-performance.tgz bonita/ lib/bonita/ webapps/bonita.war
+        unzip BonitaBPMSubscription-6.5.3-Tomcat-7.0.55.zip
+        rm -rf BonitaBPMSubscription-6.5.3-Tomcat-7.0.55/bonita/
+        cd BonitaBPMSubscription-6.5.3-Tomcat-7.0.55
+        unzip ../bonita-home-sp-6.5.3-performance.zip
+        tar -czf BonitaBPMSubscription-6.5.3-performance.tgz bonita/ lib/bonita/ webapps/bonita.war
 
 LICENSE
 -------
@@ -51,7 +51,7 @@ DATABASE CREATION
 
 INSTALLATION
 ============
- * Put the target archive (for example: BonitaBPMCommunity-6.5.2.tgz) into bonita_bpm/files/archives/ directory
+ * Put the target archive (for example: BonitaBPMCommunity-6.5.3.tgz) into bonita_bpm/files/archives/ directory
  * If you install the Bonita BPM Performance edition copy your license into bonita_bpm/files/licenses/ directory
 
 CONFIGURATION
@@ -95,9 +95,9 @@ Steps:
 
 ```puppet
 Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' }
-$bonita_bpm_version = '6.5.2'
+$bonita_bpm_version = '6.5.3'
 $bonita_bpm_edition = 'community'
-$bonita_bpm_archive = 'BonitaBPMCommunity-6.5.2.tgz'
+$bonita_bpm_archive = 'BonitaBPMCommunity-6.5.3.tgz'
 include bonita_bpm
 ```
 
@@ -108,9 +108,9 @@ Declaration example:
 ```puppet
 Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' }
 class { 'bonita_bpm':
-  version => '6.5.2',
+  version => '6.5.3',
   edition => 'community',
-  archive => 'BonitaBPMCommunity-6.5.2.tgz',
+  archive => 'BonitaBPMCommunity-6.5.3.tgz',
 }
 ```
 
@@ -122,7 +122,7 @@ The following lists all the class parameters the bonita_bpm class accepts as wel
     bonita_bpm CLASS PARAMETER         TOP SCOPE EQUIVALENT                         DESCRIPTION
     -------------------------------------------------------------------------------------------
     # mandatory parameters
-    version                            bonita_bpm_version                           The Bonita BPM version : 6.4.0, 6.4.1, 6.4.2, 6.5.0, 6.5.1, 6.5.2
+    version                            bonita_bpm_version                           The Bonita BPM version : 6.4.0, 6.4.1, 6.4.2, 6.5.0, 6.5.1, 6.5.2, 6.5.3
     edition                            bonita_bpm_edition                           The Bonita BPM edition : community, performance
     archive                            bonita_bpm_archive                           The tgz archive which contains bonita home, libs and war file
     # the license is not mandatory if edition is equal to community
