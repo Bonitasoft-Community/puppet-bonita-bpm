@@ -8,7 +8,7 @@ This module manages [Bonita BPM](http://www.bonitasoft.com) Community or Perform
 Currently this module has only been tested on Ubuntu 14.04 using Puppet 3.4.3 and PostgreSQL.
 
 * Bonita BPM editions currently supported : Community, Performance
-* Bonita BPM versions currently supported : 6.4.0, 6.4.1, 6.4.2, 6.5.0, 6.5.1, 6.5.2, 6.5.3
+* Bonita BPM versions currently supported : 6.4.0, 6.4.1, 6.4.2, 6.5.0, 6.5.1, 6.5.2, 6.5.3, 7.0.0
 
 REQUIREMENTS
 ============
@@ -22,19 +22,27 @@ ARCHIVE CREATION
  * For Community edition :  
  
         cd /tmp/
-        wget http://download.forge.ow2.org/bonita/BonitaBPMCommunity-6.5.3-Tomcat-7.0.55.zip
-        unzip BonitaBPMCommunity-6.5.3-Tomcat-7.0.55.zip
-        cd BonitaBPMCommunity-6.5.3-Tomcat-7.0.55
-        tar -czf BonitaBPMCommunity-6.5.3.tgz bonita/ lib/bonita/ webapps/bonita.war
+        wget http://download.forge.ow2.org/bonita/BonitaBPMCommunity-7.0.0-Tomcat-7.0.55.zip
+        unzip BonitaBPMCommunity-7.0.0-Tomcat-7.0.55.zip
+        cd BonitaBPMCommunity-7.0.0-Tomcat-7.0.55
+        tar -czf BonitaBPMCommunity-7.0.0.tgz bonita/ lib/bonita/ webapps/bonita.war
 
- * For Performance edition we need to update the bonita home accordingly :
+ * For Performance edition :
+    * if version < 7 we need to update the bonita home accordingly
  
-        cd /tmp/
-        unzip BonitaBPMSubscription-6.5.3-Tomcat-7.0.55.zip
-        rm -rf BonitaBPMSubscription-6.5.3-Tomcat-7.0.55/bonita/
-        cd BonitaBPMSubscription-6.5.3-Tomcat-7.0.55
-        unzip ../bonita-home-sp-6.5.3-performance.zip
-        tar -czf BonitaBPMSubscription-6.5.3-performance.tgz bonita/ lib/bonita/ webapps/bonita.war
+            cd /tmp/
+            unzip BonitaBPMSubscription-6.5.3-Tomcat-7.0.55.zip
+            rm -rf BonitaBPMSubscription-6.5.3-Tomcat-7.0.55/bonita/
+            cd BonitaBPMSubscription-6.5.3-Tomcat-7.0.55
+            unzip ../bonita-home-sp-6.5.3-performance.zip
+            tar -czf BonitaBPMSubscription-6.5.3-performance.tgz bonita/ lib/bonita/ webapps/bonita.war
+
+    * if version >= 7 the bonita home is the same for all subscriptions
+
+            cd /tmp/
+            unzip BonitaBPMSubscription-7.0.0-Tomcat-7.0.55.zip
+            cd BonitaBPMSubscription-7.0.0-Tomcat-7.0.55
+            tar -czf BonitaBPMSubscription-7.0.0.tgz bonita/ lib/bonita/ webapps/bonita.war
 
 LICENSE
 -------
@@ -95,9 +103,9 @@ Steps:
 
 ```puppet
 Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' }
-$bonita_bpm_version = '6.5.3'
+$bonita_bpm_version = '7.0.0'
 $bonita_bpm_edition = 'community'
-$bonita_bpm_archive = 'BonitaBPMCommunity-6.5.3.tgz'
+$bonita_bpm_archive = 'BonitaBPMCommunity-7.0.0.tgz'
 include bonita_bpm
 ```
 
@@ -108,9 +116,9 @@ Declaration example:
 ```puppet
 Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' }
 class { 'bonita_bpm':
-  version => '6.5.3',
+  version => '7.0.0',
   edition => 'community',
-  archive => 'BonitaBPMCommunity-6.5.3.tgz',
+  archive => 'BonitaBPMCommunity-7.0.0.tgz',
 }
 ```
 
@@ -122,7 +130,7 @@ The following lists all the class parameters the bonita_bpm class accepts as wel
     bonita_bpm CLASS PARAMETER         TOP SCOPE EQUIVALENT                         DESCRIPTION
     -------------------------------------------------------------------------------------------
     # mandatory parameters
-    version                            bonita_bpm_version                           The Bonita BPM version : 6.4.0, 6.4.1, 6.4.2, 6.5.0, 6.5.1, 6.5.2, 6.5.3
+    version                            bonita_bpm_version                           The Bonita BPM version : 6.4.0, 6.4.1, 6.4.2, 6.5.0, 6.5.1, 6.5.2, 6.5.3, 7.0.0
     edition                            bonita_bpm_edition                           The Bonita BPM edition : community, performance
     archive                            bonita_bpm_archive                           The tgz archive which contains bonita home, libs and war file
     # the license is not mandatory if edition is equal to community
@@ -186,7 +194,8 @@ By default the tenants variable is :
 ```
 It allows to set the credentials used by the tenant admin (here in the default tenant with id 1).
 
-For Performance edition, it also permits to configure the database used by the [Data Management feature](http://documentation.bonitasoft.com/database-configuration-business-data-0) :
+For Performance edition and Community edition since 7.0.0, it also permits to configure the database used by the [Data Management feature](http://documentation.bonitasoft.com/database-configuration-business-data-0) :
+ * If version < 7 we need to set hibernate_dialect parameter :
 ```puppet
   $bonita_bpm_tenants = [ 
               { id        => '1',
@@ -213,6 +222,38 @@ For Performance edition, it also permits to configure the database used by the [
                                                   db_port   => '5432',
                                                   testQuery => 'SELECT 1',
                                                   hibernate_dialect => 'org.hibernate.dialect.PostgreSQLDialect',
+                                                }
+                                 }
+              }
+  ]
+```
+ * If version >= 7 we need to replace hibernate_dialect parameter by db_vendor :
+```puppet
+  $bonita_bpm_tenants = [
+              { id        => '1',
+                user      => 'tech_user',
+                pass      => 'secret',
+                business_data => {
+                                   ds        => {
+                                                  name            => 'NotManagedBizDataDS',
+                                                  minIdle         => '1',
+                                                  maxActive       => '5',
+                                                  driverClassName => 'org.postgresql.Driver',
+                                                },
+                                   dsxa      => {
+                                                  name        => 'BusinessDataDS',
+                                                  minPoolSize => '0',
+                                                  maxPoolSize => '5',
+                                                  className   => 'org.postgresql.xa.PGXADataSource',
+                                                },
+                                   ds_common => {
+                                                  db_vendor => 'postgres',
+                                                  db_user   => 'datamanagementuser',
+                                                  db_pass   => 'datamanagementpass',
+                                                  db_name   => 'datamanagementdb',
+                                                  db_host   => '127.0.0.1',
+                                                  db_port   => '5432',
+                                                  testQuery => 'SELECT 1',
                                                 }
                                  }
               }
