@@ -58,12 +58,22 @@ class bonita_bpm::deploy_bonita_bpm {
     notify  => Service[$bonita_bpm::params::service_name],
   }
 
-  file { ["${bonita_bpm::params::home}/server/tenants/"]:
-    ensure  => directory,
-    mode    => '0755',
-    owner   => $bonita_bpm::params::app_srv_user,
-    group   => $bonita_bpm::params::app_srv_group,
-    require => Exec['copy_bonita_conf'],
+  if $bonita_bpm::params::major_version == '6' {
+    file { ["${bonita_bpm::params::home}/server/tenants/"]:
+      ensure  => directory,
+      mode    => '0755',
+      owner   => $bonita_bpm::params::app_srv_user,
+      group   => $bonita_bpm::params::app_srv_group,
+      require => Exec['copy_bonita_conf'],
+    }
+  } else {
+    file { ["${bonita_bpm::params::home}/engine-server/tenants/"]:
+      ensure  => directory,
+      mode    => '0755',
+      owner   => $bonita_bpm::params::app_srv_user,
+      group   => $bonita_bpm::params::app_srv_group,
+      require => Exec['copy_bonita_conf'],
+    }
   }
 
   file { ["${bonita_bpm::params::home}/client/tenants/"]:
@@ -75,16 +85,39 @@ class bonita_bpm::deploy_bonita_bpm {
   }
 
   # Apply configuration at platform level
-  # apply bonita-platform template to set platform credentials
-  file { 'bonita_platform_conf':
-    path    => "${bonita_bpm::params::home}/server/platform/conf/bonita-platform.properties",
-    mode    => '0644',
-    owner   => $bonita_bpm::params::app_srv_user,
-    group   => $bonita_bpm::params::app_srv_group,
-    content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/bonita-platform.properties.erb"),
-    require => Exec['copy_bonita_conf'],
-    notify  => Service[$bonita_bpm::params::service_name],
+  if $bonita_bpm::params::major_version == '6' {
+    # apply bonita-platform template to set platform credentials
+    file { 'bonita_platform_conf':
+      path    => "${bonita_bpm::params::home}/server/platform/conf/bonita-platform.properties",
+      mode    => '0644',
+      owner   => $bonita_bpm::params::app_srv_user,
+      group   => $bonita_bpm::params::app_srv_group,
+      content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/bonita-platform.properties.erb"),
+      require => Exec['copy_bonita_conf'],
+      notify  => Service[$bonita_bpm::params::service_name],
+    }
+    file { 'scheduler_conf':
+      path    => "${bonita_bpm::params::home}/server/platform/conf/services/cfg-bonita-scheduler-quartz.xml",
+      mode    => '0644',
+      owner   => $bonita_bpm::params::app_srv_user,
+      group   => $bonita_bpm::params::app_srv_group,
+      content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/cfg-bonita-scheduler-quartz.xml.erb"),
+      require => Exec['copy_bonita_conf'],
+      notify  => Service[$bonita_bpm::params::service_name],
+    }
+  } else {
+    # apply bonita-platform template to set platform credentials and Quartz (scheduler) configuration
+    file { 'bonita_platform_conf':
+      path    => "${bonita_bpm::params::home}/engine-server/conf/platform/bonita-platform-community-custom.properties",
+      mode    => '0644',
+      owner   => $bonita_bpm::params::app_srv_user,
+      group   => $bonita_bpm::params::app_srv_group,
+      content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/bonita-platform-community-custom.properties.erb"),
+      require => Exec['copy_bonita_conf'],
+      notify  => Service[$bonita_bpm::params::service_name],
+    }
   }
+
   # apply platform-tenant-config to set tenant credentials
   file { 'platform_tenant_config':
     path    => "${bonita_bpm::params::home}/client/platform/conf/platform-tenant-config.properties",
@@ -92,15 +125,6 @@ class bonita_bpm::deploy_bonita_bpm {
     owner   => $bonita_bpm::params::app_srv_user,
     group   => $bonita_bpm::params::app_srv_group,
     content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/platform-tenant-config.properties.erb"),
-    require => Exec['copy_bonita_conf'],
-    notify  => Service[$bonita_bpm::params::service_name],
-  }
-  file { 'scheduler_conf':
-    path    => "${bonita_bpm::params::home}/server/platform/conf/services/cfg-bonita-scheduler-quartz.xml",
-    mode    => '0644',
-    owner   => $bonita_bpm::params::app_srv_user,
-    group   => $bonita_bpm::params::app_srv_group,
-    content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/cfg-bonita-scheduler-quartz.xml.erb"),
     require => Exec['copy_bonita_conf'],
     notify  => Service[$bonita_bpm::params::service_name],
   }
@@ -128,45 +152,77 @@ class bonita_bpm::deploy_bonita_bpm {
     require => Exec['copy_bonita_conf'],
     notify  => Service[$bonita_bpm::params::service_name],
   }
-  # apply workers template at tenant level since 6.3.0
-  file { 'workers_conf':
-    path    => "${bonita_bpm::params::home}/server/platform/tenant-template/conf/services/cfg-bonita-work-factory.xml",
-    mode    => '0644',
-    owner   => $bonita_bpm::params::app_srv_user,
-    group   => $bonita_bpm::params::app_srv_group,
-    content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/cfg-bonita-work-factory.xml.erb"),
-    require => Exec['copy_bonita_conf'],
-    notify  => Service[$bonita_bpm::params::service_name],
-  }
-  # apply connectors template if available (performance edition and version >= 6.1)
-  if $bonita_bpm::params::connectors_tpl != undef {
-    file { 'connectors_conf':
-      path    => "${bonita_bpm::params::home}/server/platform/tenant-template/conf/services/${bonita_bpm::params::connectors_file}",
+
+  $tenant_admin_user = $bonita_bpm::params::tenants[0]['user']
+  $tenant_admin_pass = $bonita_bpm::params::tenants[0]['pass']
+
+  if $bonita_bpm::params::major_version == '6' {
+    # apply workers template at tenant level since 6.3.0
+    file { 'workers_conf':
+      path    => "${bonita_bpm::params::home}/server/platform/tenant-template/conf/services/cfg-bonita-work-factory.xml",
       mode    => '0644',
       owner   => $bonita_bpm::params::app_srv_user,
       group   => $bonita_bpm::params::app_srv_group,
-      content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/${bonita_bpm::params::connectors_tpl}"),
+      content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/cfg-bonita-work-factory.xml.erb"),
       require => Exec['copy_bonita_conf'],
       notify  => Service[$bonita_bpm::params::service_name],
     }
-  }
-  # apply bonita-server template to set tenant credentials
-  $tenant_admin_user = $bonita_bpm::params::tenants[0]['user']
-  $tenant_admin_pass = $bonita_bpm::params::tenants[0]['pass']
-  # this handles also datamanagement conf if available (performance edition and version >= 6.3)
-  if $bonita_bpm::edition == 'performance' {
+    # apply connectors template if available (performance edition and version >= 6.1)
+    if $bonita_bpm::params::connectors_tpl != undef {
+      file { 'connectors_conf':
+        path    => "${bonita_bpm::params::home}/server/platform/tenant-template/conf/services/${bonita_bpm::params::connectors_file}",
+        mode    => '0644',
+        owner   => $bonita_bpm::params::app_srv_user,
+        group   => $bonita_bpm::params::app_srv_group,
+        content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/${bonita_bpm::params::connectors_tpl}"),
+        require => Exec['copy_bonita_conf'],
+        notify  => Service[$bonita_bpm::params::service_name],
+      }
+    }
+    # apply bonita-server template to set tenant credentials
+    # this handles also datamanagement conf if available (performance edition and version >= 6.3)
+    if $bonita_bpm::edition == 'performance' {
+      $businessdata_ds_jndi           = $bonita_bpm::params::tenants[0]['business_data']['ds']['name']
+      $businessdata_dsxa_jndi         = $bonita_bpm::params::tenants[0]['business_data']['dsxa']['name']
+      $businessdata_hibernate_dialect = $bonita_bpm::params::tenants[0]['business_data']['ds_common']['hibernate_dialect']
+    }
+    file { 'bonita_server_conf':
+      path    => "${bonita_bpm::params::home}/server/platform/tenant-template/conf/bonita-server.properties",
+      mode    => '0644',
+      owner   => $bonita_bpm::params::app_srv_user,
+      group   => $bonita_bpm::params::app_srv_group,
+      content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/bonita-server.properties.erb"),
+      require => Exec['copy_bonita_conf'],
+      notify  => Service[$bonita_bpm::params::service_name],
+    }
+  } else {
+    # this handles also datamanagement conf if available (all editions since version 7.0)
+    $businessdata_db_vendor         = $bonita_bpm::params::tenants[0]['business_data']['ds_common']['db_vendor']
     $businessdata_ds_jndi           = $bonita_bpm::params::tenants[0]['business_data']['ds']['name']
     $businessdata_dsxa_jndi         = $bonita_bpm::params::tenants[0]['business_data']['dsxa']['name']
-    $businessdata_hibernate_dialect = $bonita_bpm::params::tenants[0]['business_data']['ds_common']['hibernate_dialect']
-  }
-  file { 'bonita_server_conf':
-    path    => "${bonita_bpm::params::home}/server/platform/tenant-template/conf/bonita-server.properties",
-    mode    => '0644',
-    owner   => $bonita_bpm::params::app_srv_user,
-    group   => $bonita_bpm::params::app_srv_group,
-    content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/bonita-server.properties.erb"),
-    require => Exec['copy_bonita_conf'],
-    notify  => Service[$bonita_bpm::params::service_name],
+
+    # apply community conf
+    file { 'bonita-tenant-community-custom':
+      path    => "${bonita_bpm::params::home}/engine-server/conf/tenants/template/bonita-tenant-community-custom.properties",
+      mode    => '0644',
+      owner   => $bonita_bpm::params::app_srv_user,
+      group   => $bonita_bpm::params::app_srv_group,
+      content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/bonita-tenant-community-custom.properties.erb"),
+      require => Exec['copy_bonita_conf'],
+      notify  => Service[$bonita_bpm::params::service_name],
+    }
+    # if needed apply sp conf
+    if $bonita_bpm::edition == 'performance' {
+      file { 'bonita-tenant-sp-custom':
+        path    => "${bonita_bpm::params::home}/engine-server/conf/tenants/template/bonita-tenant-sp-custom.properties",
+        mode    => '0644',
+        owner   => $bonita_bpm::params::app_srv_user,
+        group   => $bonita_bpm::params::app_srv_group,
+        content => template("bonita_bpm/bonita/${bonita_bpm::edition}/${bonita_bpm::version}/bonita-tenant-sp-custom.properties.erb"),
+        require => Exec['copy_bonita_conf'],
+        notify  => Service[$bonita_bpm::params::service_name],
+      }
+    }
   }
 
   file { 'bitronix-config.properties':

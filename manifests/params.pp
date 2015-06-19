@@ -272,6 +272,7 @@ class bonita_bpm::params {
   # manage version dependant variables
   case $bonita_bpm::version {
     '6.4.0', '6.4.1', '6.4.2', '6.5.0', '6.5.1', '6.5.2', '6.5.3': {
+      $major_version = '6'
       if $bonita_bpm::edition == 'performance' {
         $connectors_file = 'cfg-bonita-connector-timedout.xml'
         $connectors_tpl  = 'cfg-bonita-connector-timedout.xml.erb'
@@ -280,6 +281,9 @@ class bonita_bpm::params {
         $connectors_file = 'cfg-bonita-connector-impl.xml'
         $connectors_tpl  = 'cfg-bonita-connector-impl.xml.erb'
       }
+    }
+    '7.0.0': {
+      $major_version = '7'
     }
     default:{
       fail("Class['bonita_bpm::params']: this version (${bonita_bpm::version}) is not yet supported")
