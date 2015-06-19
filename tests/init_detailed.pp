@@ -1,9 +1,9 @@
 Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' }
   # Bonita BPM
   # mandatory parameters
-  $bonita_bpm_version                          = '6.5.3'
+  $bonita_bpm_version                          = '7.0.0'
   $bonita_bpm_edition                          = 'performance'
-  $bonita_bpm_archive                          = 'BonitaBPMSubscription-6.5.3-performance.tgz'
+  $bonita_bpm_archive                          = 'BonitaBPMSubscription-7.0.0.tgz'
   # the license is not mandatory if edition is equal to community
   $bonita_bpm_license                          = 'license.lic'
   # database parameters used for bonitaDS and bonitaSequenceManagerDS
@@ -60,13 +60,13 @@ Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' }
                     className   => 'org.postgresql.xa.PGXADataSource',
                   },
                   ds_common => {
+                    db_vendor => 'postgres',
                     db_user   => 'datamanagementuser',
                     db_pass   => 'datamanagementpass',
                     db_name   => 'datamanagementdb',
                     db_host   => '127.0.0.1',
                     db_port   => '5432',
                     testQuery => 'SELECT 1',
-                    hibernate_dialect => 'org.hibernate.dialect.PostgreSQLDialect',
                   }
                 }
               }
