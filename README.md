@@ -146,15 +146,15 @@ The following lists all the class parameters the bonita_bpm class accepts as wel
     bonitaDS_maxActive                 bonita_bpm_bonitaDS_maxActive                The maximum number of active connections that can be allocated from this pool at the same time
     bonitaSequenceManagerDS_minIdle    bonita_bpm_bonitaSequenceManagerDS_minIdle   see above
     bonitaSequenceManagerDS_maxActive  bonita_bpm_bonitaSequenceManagerDS_maxActive see above
-    # optional datasource for business database
-    businessDS_db_vendor               bonita_bpm_businessDS_db_vendor              mysql, postgres
-    businessDS_name                    bonita_bpm_businessDS_name
-    businessDS_user                    bonita_bpm_businessDS_user
-    businessDS_pass                    bonita_bpm_businessDS_pass
-    businessDS_host                    bonita_bpm_businessDS_host
-    businessDS_port                    bonita_bpm_businessDS_port
-    businessDS_minIdle                 bonita_bpm_businessDS_minIdle                The minimum number of established connections that should be kept in the pool at all times
-    businessDS_maxActive               bonita_bpm_businessDS_maxActive              The maximum number of active connections that can be allocated from this pool at the same time
+    # optional datasource for custom needs
+    CustomDS_db_vendor                 bonita_bpm_CustomDS_db_vendor              mysql, postgres
+    CustomDS_name                      bonita_bpm_CustomDS_name
+    CustomDS_user                      bonita_bpm_CustomDS_user
+    CustomDS_pass                      bonita_bpm_CustomDS_pass
+    CustomDS_host                      bonita_bpm_CustomDS_host
+    CustomDS_port                      bonita_bpm_CustomDS_port
+    CustomDS_minIdle                   bonita_bpm_CustomDS_minIdle                The minimum number of established connections that should be kept in the pool at all times
+    CustomDS_maxActive                 bonita_bpm_CustomDS_maxActive              The maximum number of active connections that can be allocated from this pool at the same time
     # platform credentials
     platform_admin_user                bonita_bpm_platform_admin_user               See doc about [credentials](http://documentation.bonitasoft.com/first-steps-after-setup-0#reset_pw)
     platform_admin_pass                bonita_bpm_platform_admin_pass

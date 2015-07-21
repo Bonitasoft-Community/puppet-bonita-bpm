@@ -366,17 +366,17 @@ class bonita_bpm::deploy_bonita_bpm {
     }
     default: {}
   }
-  # If Business database driver is not the same as Bonita DB driver install it
-  if $bonita_bpm::params::db_vendor != $bonita_bpm::params::businessDS_db_vendor {
-    case $bonita_bpm::params::businessDS_db_vendor {
+  # If custom database driver is not the same as Bonita DB driver install it
+  if $bonita_bpm::params::db_vendor != $bonita_bpm::params::CustomDS_db_vendor {
+    case $bonita_bpm::params::CustomDS_db_vendor {
       'mysql', 'postgres': {
         # install the database driver
-        package { $bonita_bpm::params::businessDS_pkg_driver : ensure => installed }
+        package { $bonita_bpm::params::CustomDS_pkg_driver : ensure => installed }
         # link driver and app server
-        file { $bonita_bpm::params::businessDS_driver_path:
+        file { $bonita_bpm::params::CustomDS_driver_path:
           ensure  => link,
-          target  => $bonita_bpm::params::businessDS_driver_target,
-          require => Package[$bonita_bpm::params::pkg_app_srv,$bonita_bpm::params::businessDS_pkg_driver],
+          target  => $bonita_bpm::params::CustomDS_driver_target,
+          require => Package[$bonita_bpm::params::pkg_app_srv,$bonita_bpm::params::CustomDS_pkg_driver],
           notify  => Service[$bonita_bpm::params::service_name],
         }
       }

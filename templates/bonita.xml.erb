@@ -23,12 +23,12 @@
               driverClassName="<%= scope.lookupvar('bonita_bpm::params::driverClassName') %>" 
               url="<%= scope.lookupvar('bonita_bpm::params::jdbc_url') %>"/>
 
-<% if scope.lookupvar('bonita_bpm::businessDS_user')!=:undef and scope.lookupvar('bonita_bpm::businessDS_user') != '' then -%>
-    <Resource name="businessDS"  
+<% if scope.lookupvar('bonita_bpm::CustomDS_user')!=:undef and scope.lookupvar('bonita_bpm::CustomDS_user') != '' then -%>
+    <Resource name="CustomDS"  
               auth="Container"  
               type="javax.sql.DataSource" 
-              maxActive="<%= scope.lookupvar('bonita_bpm::businessDS_maxActive') %>"  
-              minIdle="<%= scope.lookupvar('bonita_bpm::businessDS_minIdle') %>"
+              maxActive="<%= scope.lookupvar('bonita_bpm::CustomDS_maxActive') %>"  
+              minIdle="<%= scope.lookupvar('bonita_bpm::CustomDS_minIdle') %>"
               maxWait="10000"  
               initialSize="1"
               testOnBorrow="true"
@@ -36,10 +36,10 @@
               validationInterval="30000"
               removeAbandoned="true" 
               logAbandoned="true" 
-              username="<%= scope.lookupvar('bonita_bpm::businessDS_user') %>" 
-              password="<%= scope.lookupvar('bonita_bpm::businessDS_pass') %>"
-              driverClassName="<%= scope.lookupvar('bonita_bpm::params::businessDS_driverClassName') %>" 
-              url="<%= scope.lookupvar('bonita_bpm::params::businessDS_jdbc_url') %>"/>
+              username="<%= scope.lookupvar('bonita_bpm::CustomDS_user') %>" 
+              password="<%= scope.lookupvar('bonita_bpm::CustomDS_pass') %>"
+              driverClassName="<%= scope.lookupvar('bonita_bpm::params::CustomDS_driverClassName') %>" 
+              url="<%= scope.lookupvar('bonita_bpm::params::CustomDS_jdbc_url') %>"/>
 <% end -%>
 
 <% if scope.lookupvar('bonita_bpm::params::tenants')!=:undef -%>

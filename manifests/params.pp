@@ -229,26 +229,26 @@ class bonita_bpm::params {
         }
         default: {}
       }
-      case $bonita_bpm::businessDS_db_vendor {
+      case $bonita_bpm::CustomDS_db_vendor {
         'mysql': {
-          $businessDS_db_params       = '?dontTrackOpenResources=true&amp;autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8'
-          $businessDS_pkg_driver      = $mysql_pkg_driver
-          $businessDS_driver_path     = $mysql_driver_path
-          $businessDS_driver_target   = $mysql_driver_target
-          $businessDS_driverClassName = 'com.mysql.jdbc.Driver'
-          $businessDS_jdbc_url        = "jdbc:${bonita_bpm::businessDS_db_vendor}://${bonita_bpm::businessDS_host}:${bonita_bpm::businessDS_port}/${bonita_bpm::businessDS_name}${businessDS_db_params}"
+          $CustomDS_db_params       = '?dontTrackOpenResources=true&amp;autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8'
+          $CustomDS_pkg_driver      = $mysql_pkg_driver
+          $CustomDS_driver_path     = $mysql_driver_path
+          $CustomDS_driver_target   = $mysql_driver_target
+          $CustomDS_driverClassName = 'com.mysql.jdbc.Driver'
+          $CustomDS_jdbc_url        = "jdbc:${bonita_bpm::CustomDS_db_vendor}://${bonita_bpm::CustomDS_host}:${bonita_bpm::CustomDS_port}/${bonita_bpm::CustomDS_name}${CustomDS_db_params}"
         }
         'postgres': {
-          $businessDS_db_params       = ''
-          $businessDS_pkg_driver      = $pgsql_pkg_driver
-          $businessDS_driver_path     = $pgsql_driver_path
-          $businessDS_driver_target   = $pgsql_driver_target
-          $businessDS_driverClassName = 'org.postgresql.Driver'
-          $businessDS_jdbc_url        = "jdbc:postgresql://${bonita_bpm::businessDS_host}:${bonita_bpm::businessDS_port}/${bonita_bpm::businessDS_name}${businessDS_db_params}"
+          $CustomDS_db_params       = ''
+          $CustomDS_pkg_driver      = $pgsql_pkg_driver
+          $CustomDS_driver_path     = $pgsql_driver_path
+          $CustomDS_driver_target   = $pgsql_driver_target
+          $CustomDS_driverClassName = 'org.postgresql.Driver'
+          $CustomDS_jdbc_url        = "jdbc:postgresql://${bonita_bpm::CustomDS_host}:${bonita_bpm::CustomDS_port}/${bonita_bpm::CustomDS_name}${CustomDS_db_params}"
         }
         default: {
-          if $bonita_bpm::businessDS_db_vendor != undef {
-            fail("Class['bonita_bpm::params']: this businessDS db vendor (${bonita_bpm::businessDS_db_vendor}) is not yet supported")
+          if $bonita_bpm::CustomDS_db_vendor != undef {
+            fail("Class['bonita_bpm::params']: this CustomDS db vendor (${bonita_bpm::CustomDS_db_vendor}) is not yet supported")
           }
         }
       }
