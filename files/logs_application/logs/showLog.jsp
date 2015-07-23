@@ -13,7 +13,7 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  
- version v03
+ F.Krebs : version v04
  --%>
 <%@page language="java"%>
 <%@page import="java.io.*"%>
