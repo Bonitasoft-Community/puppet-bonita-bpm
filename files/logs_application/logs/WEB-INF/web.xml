@@ -4,10 +4,21 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  
+    <servlet>
+        <servlet-name>DownloadLogFileServlet</servlet-name>
+        <servlet-class>DownloadLogFileServlet</servlet-class>
+    </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>DownloadLogFileServlet</servlet-name>
+        <url-pattern>/DownloadLogFileServlet</url-pattern>
+    </servlet-mapping>
 
   <context-param>
     <param-name>logsDirectory</param-name>
-    <param-value>/var/log/tomcat7/</param-value>
+	<param-value>/var/log/tomcat7/</param-value>
   </context-param>
 
     <security-role>
