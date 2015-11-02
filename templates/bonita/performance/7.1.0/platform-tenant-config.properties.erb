@@ -1,0 +1,5 @@
+#For tenant
+#Use this property to force the tenant used by the portal when logging in
+#platform.tenant.default.id=0
+platform.tenant.default.username=<%= scope.lookupvar('bonita_bpm::params::tenants')[0]['user'] %>
+platform.tenant.default.password=<%= scope.lookupvar('bonita_bpm::params::tenants')[0]['pass'] %>
