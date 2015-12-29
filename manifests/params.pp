@@ -282,7 +282,7 @@ class bonita_bpm::params {
         $connectors_tpl  = 'cfg-bonita-connector-impl.xml.erb'
       }
     }
-    '7.0.0', '7.0.1', '7.0.2', '7.0.3', '7.1.0', '7.1.2': {
+    '7.0.0', '7.0.1', '7.0.2', '7.0.3', '7.1.0', '7.1.2', '7.1.3', '7.1.4': {
       $major_version = '7'
     }
     default:{

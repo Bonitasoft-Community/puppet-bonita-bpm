@@ -8,7 +8,7 @@ This module manages [Bonita BPM](http://www.bonitasoft.com) Community or Perform
 Currently this module has only been tested on Ubuntu 14.04 using Puppet 3.4.3 and PostgreSQL.
 
 * Bonita BPM editions currently supported : Community, Performance
-* Bonita BPM versions currently supported : 6.4.[0-2], 6.5.[0-3], 7.0.[0-3], 7.1.0, 7.1.2
+* Bonita BPM versions currently supported : 6.4.[0-2], 6.5.[0-3], 7.0.[0-3], 7.1.0, 7.1.[2-4]
 
 REQUIREMENTS
 ============
@@ -22,10 +22,10 @@ ARCHIVE CREATION
  * For Community edition :  
  
         cd /tmp/
-        wget http://download.forge.ow2.org/bonita/BonitaBPMCommunity-7.1.2-Tomcat-7.0.55.zip
-        unzip BonitaBPMCommunity-7.1.2-Tomcat-7.0.55.zip
-        cd BonitaBPMCommunity-7.1.2-Tomcat-7.0.55
-        tar -czf BonitaBPMCommunity-7.1.2.tgz bonita/ lib/bonita/ webapps/bonita.war
+        wget http://download.forge.ow2.org/bonita/BonitaBPMCommunity-7.1.4-Tomcat-7.0.55.zip
+        unzip BonitaBPMCommunity-7.1.4-Tomcat-7.0.55.zip
+        cd BonitaBPMCommunity-7.1.4-Tomcat-7.0.55
+        tar -czf BonitaBPMCommunity-7.1.4.tgz bonita/ lib/bonita/ webapps/bonita.war
 
  * For Performance edition :
     * if version < 7 we need to update the bonita home accordingly
@@ -40,9 +40,9 @@ ARCHIVE CREATION
     * if version >= 7 the bonita home is the same for all subscriptions
 
             cd /tmp/
-            unzip BonitaBPMSubscription-7.1.2-Tomcat-7.0.55.zip
-            cd BonitaBPMSubscription-7.1.2-Tomcat-7.0.55
-            tar -czf BonitaBPMSubscription-7.1.2.tgz bonita/ lib/bonita/ webapps/bonita.war
+            unzip BonitaBPMSubscription-7.1.4-Tomcat-7.0.55.zip
+            cd BonitaBPMSubscription-7.1.4-Tomcat-7.0.55
+            tar -czf BonitaBPMSubscription-7.1.4.tgz bonita/ lib/bonita/ webapps/bonita.war
 
 LICENSE
 -------
@@ -103,9 +103,9 @@ Steps:
 
 ```puppet
 Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' }
-$bonita_bpm_version = '7.1.2'
+$bonita_bpm_version = '7.1.4'
 $bonita_bpm_edition = 'community'
-$bonita_bpm_archive = 'BonitaBPMCommunity-7.1.2.tgz'
+$bonita_bpm_archive = 'BonitaBPMCommunity-7.1.4.tgz'
 include bonita_bpm
 ```
 
@@ -116,9 +116,9 @@ Declaration example:
 ```puppet
 Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' }
 class { 'bonita_bpm':
-  version => '7.1.2',
+  version => '7.1.4',
   edition => 'community',
-  archive => 'BonitaBPMCommunity-7.1.2.tgz',
+  archive => 'BonitaBPMCommunity-7.1.4.tgz',
 }
 ```
 
@@ -130,7 +130,7 @@ The following lists all the class parameters the bonita_bpm class accepts as wel
     bonita_bpm CLASS PARAMETER         TOP SCOPE EQUIVALENT                         DESCRIPTION
     -------------------------------------------------------------------------------------------
     # mandatory parameters
-    version                            bonita_bpm_version                           The Bonita BPM version : 6.4.[0-2], 6.5.[0-3], 7.0.[0-3], 7.1.0, 7.1.2
+    version                            bonita_bpm_version                           The Bonita BPM version : 6.4.[0-2], 6.5.[0-3], 7.0.[0-3], 7.1.0, 7.1.[2-4]
     edition                            bonita_bpm_edition                           The Bonita BPM edition : community, performance
     archive                            bonita_bpm_archive                           The tgz archive which contains bonita home, libs and war file
     # the license is not mandatory if edition is equal to community
