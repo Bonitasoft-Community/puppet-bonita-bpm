@@ -1,9 +1,9 @@
 Exec { path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' }
   # Bonita BPM
   # mandatory parameters
-  $bonita_bpm_version                          = '7.1.4'
+  $bonita_bpm_version                          = '7.1.5'
   $bonita_bpm_edition                          = 'performance'
-  $bonita_bpm_archive                          = 'BonitaBPMSubscription-7.1.4.tgz'
+  $bonita_bpm_archive                          = 'BonitaBPMSubscription-7.1.5.tgz'
   # the license is not mandatory if edition is equal to community
   $bonita_bpm_license                          = 'license.lic'
   # database parameters used for bonitaDS and bonitaSequenceManagerDS
